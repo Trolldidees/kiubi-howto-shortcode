@@ -58,8 +58,6 @@ var createFormElement = function(field)
 	switch(field.type)
 	{
 		case 'text' : 
-		case 'date' : 
-		case 'datetime' : 
 		case 'email' : 
 		case 'hidden' :
 		case 'lettres' :
@@ -71,6 +69,24 @@ var createFormElement = function(field)
 				'name' : field.name,
 				'class' : "textfield " + field.type
 			});
+			
+		case 'date' :
++			return $('<input>', {
++				'id' : field.id,
++				'type' : 'text',
++				'placeholder' : field.help,
++				'name' : field.name,
++				'class' : "textfield datepicker"
++			}).datepicker();
++			
++		case 'datetime' :
++			return $('<input>', {
++				'id' : field.id,
++				'type' : 'text',
++				'placeholder' : field.help,
++				'name' : field.name,
++				'class' : "textfield datetimepicker"
++			}).datetimepicker();
 
 		case 'chiffres' :
 			return $('<input>', {
@@ -93,7 +109,8 @@ var createFormElement = function(field)
 			return $('<textarea>', {
 				'id' : field.id,
 				'placeholder' : field.help,
-				'name' : field.name
+				'name' : field.name,
+				'rows' : 10
 			});
 
 		case 'select' :
@@ -116,8 +133,7 @@ var createFormElement = function(field)
 		case 'civilite' :
 		case 'checkbox' :
 			var element = $('<div>', {
-				'id' : field.id,
-				'class' : field.type
+				'id' : field.id
 			});
 			$.each(field.options, function(){
 				var input = $('<input>', {
@@ -127,6 +143,7 @@ var createFormElement = function(field)
 				});
 
 				$('<label>')
+					.addClass( (field.type == "civilite" ? "radio" : field.type) + "_label")
 					.append(input)
 					.append(this.label)
 					.appendTo(element);
